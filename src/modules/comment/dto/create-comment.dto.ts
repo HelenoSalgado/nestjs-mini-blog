@@ -25,7 +25,7 @@ export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  authorId: string;
+  profileId: string;
 
   likes: number;
 

@@ -12,15 +12,34 @@ import { CommentModule } from './modules/comment/comment.module';
 import { CommentController } from './modules/comment/controller/comment.controller';
 import { CommentRepository } from './modules/comment/repository';
 import { CommentService } from './modules/comment/service/comment.service';
+import { ProfileModule } from './modules/profile/profile.module';
+import { ProfileController } from './modules/profile/controller/profile.controller';
+import { ProfileService } from './modules/profile/service/profile.service';
+import { ProfileRepository } from './modules/profile/repository';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [UserModule, PostModule, CommentModule, PrismaModule],
-  controllers: [UserController, PostController, CommentController],
+  imports: [
+    UserModule, 
+    ProfileModule, 
+    PostModule, 
+    CommentModule, 
+    PrismaModule,
+    CacheModule.register()
+  ],
+  controllers: [
+    UserController, 
+    ProfileController, 
+    PostController, 
+    CommentController
+  ],
   providers: [
     UserService, 
+    ProfileService,
     PostService, 
     CommentService, 
     UserRepository, 
+    ProfileRepository,
     PostRepository, 
     CommentRepository],
 })

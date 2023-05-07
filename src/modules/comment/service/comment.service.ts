@@ -20,8 +20,8 @@ export class CommentService {
     return await this.repository.findOne(id);
   }
 
-  async findAll(){
-    return await this.repository.findAll();
+  async findAll(id: string){
+    return await this.repository.findAll(id);
   }
 
   async update(id: string, updateComment: UpdateComment){

@@ -18,32 +18,44 @@ export class PostController {
   async findAll() {
     const posts = await this.postsService.findAll();
 
-    if(posts.length == 0) throw new NotFoundException(msg.postsNotExist);
+    //if(posts.length == 0) throw new NotFoundException(msg.postsNotExist);
   
     return posts;
   }
 
   @Get(':id')
   async findOne( @Param() where: { id: string }) {
-
-      const post = await this.postsService.findOne(where.id);
-
-      if(!post) throw new NotFoundException(msg.postNotExist);
       
+      const post = await this.postsService.findOne(where.id);
+      if(!post) throw new NotFoundException(msg.postNotExist);
       return post;
+
   }
 
   @Put('update/:id')
-  async update(@Param() where: { id: string }, 
-  @Body() updatePostDto: UpdatePostDto):Promise<UpdatePostDto>{
+  async update(
+  @Param() where: { id: string }, 
+  @Body() updatePostDto: UpdatePostDto){
 
-    return await this.postsService.update(where.id, updatePostDto);
+    await this.postsService.update(where.id, updatePostDto);
+    return { message: msg.postUpdated, statusCode: 200 };
 
   }
 
   @Delete('delete/:id')
   async remove(@Param() where: { id: string }){
 
+    // return new Promise((resolve, reject) => {
+    //   if(true) {
+
+    //     setTimeout(() => {
+    //       resolve(true)
+    //     }, 1000);
+         
+    //   } else {
+    //      reject();
+    //   }
+    // });
     await this.postsService.remove(where.id);
     return { message: msg.postDeletedSucess, statusCode: 200 };
     

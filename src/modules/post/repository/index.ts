@@ -29,6 +29,7 @@ export class PostRepository {
         author: {
           select: {
             name: true,
+            avatar: true
           },
         },
         title: true,
@@ -52,8 +53,10 @@ export class PostRepository {
         author: {
           select: {
             name: true,
+            avatar: true,
           },
         },
+        id: true,
         title: true,
         content: true,
         authorId: true,
@@ -64,6 +67,7 @@ export class PostRepository {
         },
         likes: true,
         published: true,
+        updatedAt: true,
       },
     });
   }
@@ -72,14 +76,6 @@ export class PostRepository {
     return this.prisma.post.update({ 
       where: { id }, 
       data,
-      select: {
-        title: true,
-        description: true,
-        content: true,
-        published: true,
-        authorId: true,
-        updatedAt: true,
-      },
     });
   }
 

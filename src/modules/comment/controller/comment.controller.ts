@@ -10,8 +10,16 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post('create')
-  async create(@Body() createCommentDto: CreateCommentDto): Promise<CreateCommentDto>{
-    return await this.commentService.create(createCommentDto);
+  async create(@Body() createCommentDto: CreateCommentDto){
+    await this.commentService.create(createCommentDto);
+    await new Promise((resolveOuter) => {
+      resolveOuter(
+        new Promise((resolveInner) => {
+          setTimeout(resolveInner, 1000);
+        })
+      );
+    });
+    return { message: msg.commentCreatedSucess, statusCode: 200 };
   }
 
   @Get(':id')
@@ -25,9 +33,10 @@ export class CommentController {
 
   }
 
-  @Get()
-  async findAll() {
-    const comments = await this.commentService.findAll();
+  // Trás todos os comentários de um post específico.
+  @Get('post/:id')
+  async findAll(@Param() where: { id: string }) {
+    const comments = await this.commentService.findAll(where.id);
 
     if(comments.length == 0) throw new NotFoundException(msg.commentNotExist);
   

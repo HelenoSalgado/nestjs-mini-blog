@@ -1,41 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
   MaxLength,
   MinLength,
+  IsOptional
 } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateProfileDto {
 
   id: string
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(2)
   @MaxLength(21)
   @ApiProperty()
-  name: string;
-
-  @IsEmail()
-  @ApiProperty()
-  email: string;
+  name?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
-  subdominio: string;
+  avatar?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
-  password: string;
+  bio?: string;
 
-}
-
-export class FindIdParams {
-  @IsString()
-  id: string;
 }

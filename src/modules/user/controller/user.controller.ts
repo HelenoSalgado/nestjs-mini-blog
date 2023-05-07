@@ -20,8 +20,9 @@ export class UserController {
 
   @Post('create')
   async create(@Body() createUserDto: CreateUserDto) {
-
-   return await this.usersService.create(createUserDto);
+   
+   await this.usersService.create(createUserDto);
+   return { message: msg.userCreatedSucess, statusCode: 200 };
 
   }
 

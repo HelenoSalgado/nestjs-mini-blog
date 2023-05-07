@@ -4,6 +4,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserRepository } from '../repository';
 import { msg } from 'src/constants/msgUser';
 import ShortUniqueId from 'short-unique-id';
+import { CreateProfileDto } from '../dto/create-profile.tdo';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,15 @@ export class UserService {
 
     createUserDto.id = generateId(11);
 
-    return await this.repository.create(createUserDto);
+    await this.repository.create(createUserDto);
+
+    return await this.createProfile(createUserDto.id, createUserDto.name);
+
+  }
+
+  async createProfile(id: string, name: string){
+    
+    return await this.repository.createProfile(id, name);
 
   }
 

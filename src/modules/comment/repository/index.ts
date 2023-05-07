@@ -8,7 +8,7 @@ export class CommentRepository {
 
   create(data: Comment){
     return this.prisma.comment.create({
-      data
+      data,
     });
   }
 
@@ -16,11 +16,7 @@ export class CommentRepository {
     return this.prisma.comment.findUnique({ 
       where: { id },
       select: {
-        author: {
-          select: {
-            name: true,
-          },
-        },
+        profileId: true,
         id: true,
         content: true,
         likes: true,
@@ -28,17 +24,19 @@ export class CommentRepository {
     });
   }
 
-  findAll(){
+  findAll(id: string){
     return this.prisma.comment.findMany({
+      where: { postId: id },
       select: {
-        author: {
+        id: true,
+        profile: {
           select: {
             name: true,
-          }
+            avatar: true,
+          },
         },
-        id: true,
-        content: true
-      }
+        content: true,
+      },
     });
   }
 

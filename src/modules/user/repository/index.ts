@@ -1,25 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { CreateUserDto, FindIdParams } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { FindIdParams } from '../dto/create-user.dto';
+import { UpdateUser, User } from '../interface/user.interface';
+import { Profile } from '../interface/profile.interface';
 
 @Injectable()
 export class UserRepository {
 
   constructor(private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto){
+  create(data: User){
     return this.prisma.user.create({ 
-      data: createUserDto,
+      data,
       select: {
         id: true,
         name: true,
         email: true,
         profileViews: true,
-        city: true,
-        country: true
       },
     });
+  }
+
+  createProfile(id: string, name: string){
+    return this.prisma.profile.create({
+      data: {
+        id,
+        name,
+        User: {
+          connect: {
+            id,
+          }
+        }
+      },
+    })
   }
 
   findAll(){
@@ -29,8 +42,6 @@ export class UserRepository {
         name: true,
         email: true,
         profileViews: true,
-        city: true,
-        country: true
       },
     });
   }
@@ -54,13 +65,11 @@ export class UserRepository {
         name: true,
         email: true,
         profileViews: true,
-        city: true,
-        country: true,
       },
      });
   }
 
-  update(where: FindIdParams, data: UpdateUserDto){
+  update(where: FindIdParams, data: UpdateUser){
     return this.prisma.user.update({
       where,
       data,
